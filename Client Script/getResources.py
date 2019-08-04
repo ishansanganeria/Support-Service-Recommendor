@@ -1,4 +1,8 @@
-import subprocess
+##################################################################################################
+############## PRINTS A JSON OBJECT CONTAINING DETAILS ABOUT SYSTEM RESOURCE STATUS ##############
+##################################################################################################
+
+import subprocess, json
 
 #RETURNS CAPACITY OF THE BATTERY IN PERCENTAGE
 def batteryCapacity():
@@ -7,9 +11,8 @@ def batteryCapacity():
     arr = (result.split('\n'))[1].split(' ')
     arr_len = len(arr)
     battery_capacity = arr[arr_len-1]
-    return battery_capacity
+    return int(battery_capacity[:2])
 
-#RETURNS TEMPERATURE OF THE SYSTEM IN CELCIUS
 def temperature():
     p = subprocess.Popen("sensors", stdout=subprocess.PIPE)
     result = p.communicate()[0]
@@ -21,7 +24,7 @@ def temperature():
             break
     core_temperature = (arr[count].split(' '))[4]
     core_temperature_len = len(core_temperature)
-    return core_temperature[1:5]
+    return float(core_temperature[1:5])
 
 #TELLS WHETHER A STRING IS A NUMBER
 def RepresentsInt(s):
@@ -79,3 +82,14 @@ def diskStatus():
     
     return int(((float(used))/available)*100)
 
+
+data = {
+    "batteryCapacity": batteryCapacity(),
+    "temperature": temperature(),
+    "ram": ramStatus(),
+    "cpu": cpuStatus(),
+    "disk": diskStatus()
+}
+
+json_data = json.dumps(data)
+print json_data
