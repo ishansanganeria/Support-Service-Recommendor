@@ -61,20 +61,20 @@ app.route('/notification/:data')
         let data = JSON.parse(req.params['data'])
 
         const now = new Date();
-        dt = date_time.format(now, 'YYYY/MM/DD HH:mm:ss');
-        var res = dt.split(" ")
-        date = res[0].replace('/', '-')
+        let dt = date_time.format(now, 'YYYY/MM/DD HH:mm:ss');
+        let res = dt.split(" ")
+        let date = res[0].replace('/', '-')
         date = date.replace('/', '-')
-        time = res[1]
+        let time = res[1]
 
-        serialNumber = data.serialNumber;
-        batteryCapacity = data.batteryCapacity;
-        temperature = data.temperature;
-        ram = data.ram;
-        cpu = data.cpu;
-        disk = data.disk;
+        let serialNumber = data.serialNumber;
+        let batteryCapacity = data.batteryCapacity;
+        let temperature = data.temperature;
+        let ram = data.ram;
+        let cpu = data.cpu;
+        let disk = data.disk;
 
-        sql = "INSERT INTO stats VALUES ( " + serialNumber + ",\"" + date + "\",\"" + time + "\"," + batteryCapacity + "," + temperature + "," + ram + "," + cpu + "," + disk + ");"
+        let sql = "INSERT INTO stats VALUES ( " + serialNumber + ",\"" + date + "\",\"" + time + "\"," + batteryCapacity + "," + temperature + "," + ram + "," + cpu + "," + disk + ");"
 
         con.query(sql, function (err, result) {
             if (err) throw err;
@@ -89,79 +89,77 @@ app.route('/notification/:data')
 // SELECT AVG(Battery_Life) from stats
 // WHERE DATE > (CURRENT_DATE) - 10 AND Serial_Number = (SERIAL_NUMBER)
 
-app.route('/battery/:data')
-    .get((req, response) => {
-
-        let serialNumber = JSON.parse(req.params['data'])
-        let date = getOldDate();
-        sql = "SELECT AVG(Battery_Life) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
-        console.log(sql);
-        con.query(sql, function (err, result) {
-            if (err) throw err;
-            console.log("The average battery Life is " + JSON.stringify(result));
-            console.log("\n")
-            response.json(result);
-        });
+function batteryAverage(serialNumber) {
+    let date = getOldDate();
+    sql = "SELECT AVG(Battery_Life) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+    console.log(sql);
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("The average battery Life is " + JSON.stringify(result));
+        console.log("\n")
+        response.json(result);
     });
+}
 
-app.route('/cpu/:data')
-    .get((req, response) => {
-
-        let serialNumber = JSON.parse(req.params['data'])
-        let date = getOldDate();
-        sql = "SELECT AVG(CPU) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
-        console.log(sql);
-        con.query(sql, function (err, result) {
-            if (err) throw err;
-            console.log("The average cpu usage is " + JSON.stringify(result));
-            console.log("\n")
-            response.json(result);
-        });
+function cpuAverage(serialNumber) {
+    let date = getOldDate();
+    sql = "SELECT AVG(CPU) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+    console.log(sql);
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("The average cpu usage is " + JSON.stringify(result));
+        console.log("\n")
+        response.json(result);
     });
+}
 
-app.route('/disk/:data')
-    .get((req, response) => {
-
-        let serialNumber = JSON.parse(req.params['data'])
-        let date = getOldDate();
-        sql = "SELECT AVG(Disk) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
-        console.log(sql);
-        con.query(sql, function (err, result) {
-            if (err) throw err;
-            console.log("Your used disk space is " + JSON.stringify(result));
-            console.log("\n")
-            response.json(result);
-        });
+function diskAverage(serialNumber) {
+    let date = getOldDate();
+    sql = "SELECT AVG(Disk) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+    console.log(sql);
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("Your used disk space is " + JSON.stringify(result));
+        console.log("\n")
+        response.json(result);
     });
+}
 
-app.route('/temperature/:data')
-    .get((req, response) => {
-
-        let serialNumber = JSON.parse(req.params['data'])
-        let date = getOldDate();
-        sql = "SELECT AVG(Temperature) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
-        console.log(sql);
-        con.query(sql, function (err, result) {
-            if (err) throw err;
-            console.log("The average temperature is " + JSON.stringify(result));
-            console.log("\n")
-            response.json(result);
-        });
+function temperatureAverage(serialNumber) {
+    let date = getOldDate();
+    sql = "SELECT AVG(Temperature) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+    console.log(sql);
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("The average temperature is " + JSON.stringify(result));
+        console.log("\n")
+        response.json(result);
     });
+}
 
-app.route('/ram/:data')
-    .get((req, response) => {
-
-        let serialNumber = JSON.parse(req.params['data'])
+async function ramAverage(serialNumber) {
+    let promise = new Promise(function (resolve, reject) {
         let date = getOldDate();
         sql = "SELECT AVG(RAM) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
         console.log(sql);
         con.query(sql, function (err, result) {
             if (err) throw err;
             console.log("The average ram usage is " + JSON.stringify(result));
-            console.log("\n")
-            response.json(result);
+            result = JSON.stringify(result);
+            result = result.substring(result.indexOf(":") + 1, result.indexOf(":") + 3)
+            resolve(result);
         });
+    })
+    return promise;
+}
+
+app.route('/getStatus/:data')
+    .get((req, response) => {
+        let serialNumber = JSON.parse(req.params['data'])
+        ramAverage(serialNumber)
+            .then((ram) => {
+                console.log(ram);
+            })
     });
 
 
