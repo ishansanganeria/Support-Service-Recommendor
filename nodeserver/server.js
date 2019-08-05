@@ -90,54 +90,70 @@ app.route('/notification/:data')
 // WHERE DATE > (CURRENT_DATE) - 10 AND Serial_Number = (SERIAL_NUMBER)
 
 function batteryAverage(serialNumber) {
-    let date = getOldDate();
-    sql = "SELECT AVG(Battery_Life) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("The average battery Life is " + JSON.stringify(result));
-        console.log("\n")
-        response.json(result);
+    let promise = new Promise(function (resolve, reject) {
+        let date = getOldDate();
+        sql = "SELECT AVG(Battery_Life) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+        console.log(sql);
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("The average battery Life is " + JSON.stringify(result));
+            result = JSON.stringify(result);
+            result = result.substring(result.indexOf(":") + 1, result.indexOf(":") + 3)
+            resolve(result);
+        })
     });
+    return promise;
 }
 
 function cpuAverage(serialNumber) {
-    let date = getOldDate();
-    sql = "SELECT AVG(CPU) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("The average cpu usage is " + JSON.stringify(result));
-        console.log("\n")
-        response.json(result);
-    });
+    let promise = new Promise(function (resolve, reject) {
+        let date = getOldDate();
+        sql = "SELECT AVG(CPU) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+        console.log(sql);
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("The average cpu usage is " + JSON.stringify(result));
+            result = JSON.stringify(result);
+            result = result.substring(result.indexOf(":") + 1, result.indexOf(":") + 3)
+            resolve(result);
+        });
+    })
+    return promise
 }
 
 function diskAverage(serialNumber) {
-    let date = getOldDate();
-    sql = "SELECT AVG(Disk) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("Your used disk space is " + JSON.stringify(result));
-        console.log("\n")
-        response.json(result);
-    });
+    let promise = new Promise(function (resolve, reject) {
+        let date = getOldDate();
+        sql = "SELECT AVG(Disk) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+        console.log(sql);
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("Your used disk space is " + JSON.stringify(result));
+            result = JSON.stringify(result);
+            result = result.substring(result.indexOf(":") + 1, result.indexOf(":") + 3)
+            resolve(result);
+        });
+    })
+    return promise
 }
 
 function temperatureAverage(serialNumber) {
-    let date = getOldDate();
-    sql = "SELECT AVG(Temperature) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
-    console.log(sql);
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("The average temperature is " + JSON.stringify(result));
-        console.log("\n")
-        response.json(result);
-    });
+    let promise = new Promise(function (resolve, reject) {
+        let date = getOldDate();
+        sql = "SELECT AVG(Temperature) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+        console.log(sql);
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("The average temperature is " + JSON.stringify(result));
+            result = JSON.stringify(result);
+            result = result.substring(result.indexOf(":") + 1, result.indexOf(":") + 3)
+            resolve(result);
+        })
+    })
+    return promise;
 }
 
-async function ramAverage(serialNumber) {
+function ramAverage(serialNumber) {
     let promise = new Promise(function (resolve, reject) {
         let date = getOldDate();
         sql = "SELECT AVG(RAM) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
@@ -156,9 +172,27 @@ async function ramAverage(serialNumber) {
 app.route('/getStatus/:data')
     .get((req, response) => {
         let serialNumber = JSON.parse(req.params['data'])
+        let ramAvg, cpuAvg, diskAvg, tempAvg, batteryAvg
         ramAverage(serialNumber)
             .then((ram) => {
-                console.log(ram);
+                ramAvg = ram;
+                temperatureAverage(serialNumber)
+                    .then((temp) => {
+                        tempAvg = temp;
+                        diskAverage(serialNumber)
+                            .then((disk) => {
+                                diskAvg = disk;
+                                cpuAverage(serialNumber)
+                                    .then((cpu) => {
+                                        cpuAvg = cpu;
+                                        batteryAverage(serialNumber)
+                                            .then((battery) => {
+                                                batteryAvg = battery
+                                                response.json({ramAvg, cpuAvg, diskAvg, tempAvg, batteryAvg})
+                                            })
+                                    })
+                            })
+                    })
             })
     });
 
