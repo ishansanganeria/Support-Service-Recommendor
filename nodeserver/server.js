@@ -104,6 +104,36 @@ app.route('/battery/:data')
         });
     });
 
+    app.route('/cpu/:data')
+    .get((req, response) => {
+
+        let serialNumber = JSON.parse(req.params['data'])
+        let date = getOldDate();
+        sql = "SELECT AVG(CPU) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+        console.log(sql);
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("The average cpu usage is " + JSON.stringify(result));
+            console.log("\n")
+            response.json(result);
+        });
+    });
+
+    app.route('/disk/:data')
+    .get((req, response) => {
+
+        let serialNumber = JSON.parse(req.params['data'])
+        let date = getOldDate();
+        sql = "SELECT AVG(Disk) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+        console.log(sql);
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("Your remaining disk space is " + JSON.stringify(result));
+            console.log("\n")
+            response.json(result);
+        });
+    });
+
 app.route('/temperature/:data')
     .get((req, response) => {
 
