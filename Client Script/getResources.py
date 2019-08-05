@@ -91,6 +91,7 @@ def diskStatus():
 
 
 data = {
+    "serialNumber": 12345,
     "batteryCapacity": batteryCapacity(),
     "temperature": temperature(),
     "ram": ramStatus(),
