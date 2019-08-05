@@ -104,7 +104,7 @@ app.route('/battery/:data')
         });
     });
 
-    app.route('/cpu/:data')
+app.route('/cpu/:data')
     .get((req, response) => {
 
         let serialNumber = JSON.parse(req.params['data'])
@@ -119,7 +119,7 @@ app.route('/battery/:data')
         });
     });
 
-    app.route('/disk/:data')
+app.route('/disk/:data')
     .get((req, response) => {
 
         let serialNumber = JSON.parse(req.params['data'])
@@ -128,7 +128,7 @@ app.route('/battery/:data')
         console.log(sql);
         con.query(sql, function (err, result) {
             if (err) throw err;
-            console.log("Your remaining disk space is " + JSON.stringify(result));
+            console.log("Your used disk space is " + JSON.stringify(result));
             console.log("\n")
             response.json(result);
         });
