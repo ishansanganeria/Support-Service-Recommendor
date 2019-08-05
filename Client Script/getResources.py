@@ -5,7 +5,6 @@
 import subprocess, json
 import requests, urllib
 
-
 #RETURNS CAPACITY OF THE BATTERY IN PERCENTAGE
 def batteryCapacity():
     p = subprocess.Popen(["acpi", "-V"], stdout=subprocess.PIPE)

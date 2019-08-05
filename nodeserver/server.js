@@ -74,11 +74,7 @@ app.route('/notification/:data')
         cpu = data.cpu;
         disk = data.disk;
 
-        console.log(date)
-
-
         sql = "INSERT INTO stats VALUES ( " + serialNumber + ",\"" + date + "\",\"" + time + "\"," + batteryCapacity + "," + temperature + "," + ram + "," + cpu + "," + disk + ");"
-        // console.log(sql);
 
         con.query(sql, function (err, result) {
             if (err) throw err;
