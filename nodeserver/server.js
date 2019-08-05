@@ -3,6 +3,7 @@ const cors = require('cors');
 const mysql = require('mysql');
 const app = express();
 const date_time = require('date-and-time');
+// const date = require('date');
 
 app.use(cors());
 
@@ -89,6 +90,39 @@ app.route('/notification/:data')
         response.json(data)
     });
 
+// SELECT AVG(Battery_Life) from stats
+// WHERE DATE > (CURRENT_DATE) - 10 AND Serial_Number = (SERIAL_NUMBER)
+
+app.route('/battery/:data')
+    .get((req, response) => {
+
+        let serialNumber = JSON.parse(req.params['data'])
+        let date = getOldDate();
+        sql = "SELECT AVG(Battery_Life) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+        console.log(sql);
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("The average battery Life is " + JSON.stringify(result));
+            console.log("\n")
+            response.json(result);
+        });
+    });
+
+
 app.listen(8080, () => {
     console.log('\nServer started!')
 })
+
+
+function getOldDate() {
+
+    var date = new Date();
+    date.setDate(date.getDate() - 7);
+
+    if ((date.getMonth() + 1) < 10) {
+        var finalDate = date.getFullYear() + '-0' + (date.getMonth() + 1) + '-' + date.getDate();
+    } else {
+        var finalDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+    }
+    return finalDate
+}
