@@ -108,6 +108,36 @@ app.route('/battery/:data')
         });
     });
 
+app.route('/temperature/:data')
+    .get((req, response) => {
+
+        let serialNumber = JSON.parse(req.params['data'])
+        let date = getOldDate();
+        sql = "SELECT AVG(Temperature) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+        console.log(sql);
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("The average temperature is " + JSON.stringify(result));
+            console.log("\n")
+            response.json(result);
+        });
+    });
+
+app.route('/ram/:data')
+    .get((req, response) => {
+
+        let serialNumber = JSON.parse(req.params['data'])
+        let date = getOldDate();
+        sql = "SELECT AVG(RAM) from stats WHERE Date > " + date + " AND Serial_Number = " + serialNumber + ";"
+        console.log(sql);
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("The average ram usage is " + JSON.stringify(result));
+            console.log("\n")
+            response.json(result);
+        });
+    });
+
 
 app.listen(8080, () => {
     console.log('\nServer started!')
