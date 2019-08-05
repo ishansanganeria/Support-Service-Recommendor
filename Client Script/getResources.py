@@ -3,6 +3,8 @@
 ##################################################################################################
 
 import subprocess, json
+import requests, urllib
+
 
 #RETURNS CAPACITY OF THE BATTERY IN PERCENTAGE
 def batteryCapacity():
@@ -57,7 +59,12 @@ def cpuStatus():
     arr = (result.split('\n'))
     arr_len = len(arr)
     arr = arr[arr_len-2].split(' ')
-    return int(float(arr[8]))
+    while True:
+        try:
+            arr.remove('')
+        except ValueError:
+            break
+    return int(float(arr[3]))
 
 #RETURNS THE PERCENTAGE OF HDD/SDD BEING USED
 def diskStatus():    
@@ -91,5 +98,11 @@ data = {
     "disk": diskStatus()
 }
 
+print data
+
 json_data = json.dumps(data)
-print json_data
+
+json_data_enc = urllib.quote(json_data, safe='')
+url = 'http://localhost:8080/notification/' + json_data_enc
+r = requests.get(url)
+print r
