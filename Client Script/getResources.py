@@ -99,10 +99,7 @@ data = {
     "disk": diskStatus()
 }
 
-print data
-
 json_data = json.dumps(data)
-
 json_data_enc = urllib.quote(json_data, safe='')
 url = 'http://localhost:8080/notification/' + json_data_enc
 r = requests.get(url)
