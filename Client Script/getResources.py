@@ -12,8 +12,8 @@ def batteryCapacity():
     arr = (result.split('\n'))[1].split(' ')
     arr_len = len(arr)
     battery_capacity = arr[arr_len-1]
-    ##################CORRECT FOR 100%#################
-    return int(battery_capacity[:2])
+    ind = battery_capacity.find('%')
+    return int(battery_capacity[:ind])
 
 def temperature():
     p = subprocess.Popen("sensors", stdout=subprocess.PIPE)
