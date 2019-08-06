@@ -17,26 +17,6 @@ con.connect(function (err) {
     if (err) throw err;
     console.log("Connected!");
 
-    query = "DROP DATABASE dell_database"
-    con.query(query, function (err, result) {
-        try {
-            if (err) throw err;
-            console.log("Database deleted: " + JSON.stringify(result));
-            console.log("\n")
-        } catch (error) {
-            console.log("Database doesn't exist");
-            console.log("\n")
-        }
-
-    });
-
-    query = "CREATE DATABASE dell_database"
-    con.query(query, function (err, result) {
-        if (err) throw err;
-        console.log("Database created: " + JSON.stringify(result));
-        console.log("\n")
-    });
-
     query = "USE dell_database"
     con.query(query, function (err, result) {
         if (err) throw err;
@@ -44,15 +24,6 @@ con.connect(function (err) {
         console.log("\n")
     });
 
-
-    // YYYY-MM-DD
-    // hh:mm:ss
-    query = "CREATE TABLE stats (Serial_Number int NOT NULL,        Date DATE NOT NULL, Time TIME NOT NULL,        Battery_Life int,        Temperature int,        RAM int,    CPU int,        Disk int,            PRIMARY KEY(Serial_Number, Date, Time)    ); "
-    con.query(query, function (err, result) {
-        if (err) throw err;
-        console.log("Created table stats: " + JSON.stringify(result));
-        console.log("\n")
-    });
 });
 
 
