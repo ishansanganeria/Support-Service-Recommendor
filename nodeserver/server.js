@@ -175,20 +175,20 @@ app.route('/getStatus/:data')
         let ramAvg, cpuAvg, diskAvg, tempAvg, batteryAvg
         ramAverage(serialNumber)
             .then((ram) => {
-                ramAvg = ram;
+                ramAvg = parseInt(ram, 10);
                 temperatureAverage(serialNumber)
                     .then((temp) => {
-                        tempAvg = temp;
+                        tempAvg = parseInt(temp, 10);
                         diskAverage(serialNumber)
                             .then((disk) => {
-                                diskAvg = disk;
+                                diskAvg = parseInt(disk, 10);
                                 cpuAverage(serialNumber)
                                     .then((cpu) => {
-                                        cpuAvg = cpu;
+                                        cpuAvg = parseInt(cpu,10);
                                         batteryAverage(serialNumber)
                                             .then((battery) => {
-                                                batteryAvg = battery
-                                                response.json({ramAvg, cpuAvg, diskAvg, tempAvg, batteryAvg})
+                                                batteryAvg = parseInt(battery,10);
+                                                response.json({ ramAvg, cpuAvg, diskAvg, tempAvg, batteryAvg })
                                             })
                                     })
                             })
