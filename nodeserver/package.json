@@ -15,6 +15,8 @@
     "date": "^1.0.2",
     "date-and-time": "^0.9.0",
     "express": "^4.17.1",
-    "mysql": "^2.17.1"
+    "mysql": "^2.17.1",
+    "node-notifier": "^5.4.1",
+    "twilio": "^3.33.3"
   }
 }

@@ -3,7 +3,12 @@ const cors = require('cors');
 const mysql = require('mysql');
 const app = express();
 const date_time = require('date-and-time');
-// const date = require('date');
+
+const accountSid = "ACdfa5356242fbf07537a964929a0805bf";
+const authToken = "264be73428c00ea792ce0b83c91500de";
+const client = require('twilio')(accountSid, authToken);
+
+const notifier = require('node-notifier');
 
 app.use(cors());
 
@@ -25,6 +30,31 @@ con.connect(function (err) {
     });
 
 });
+
+app.route('/sendSMS')
+    .get((req, response) => {
+
+        client.messages.create({
+            to: '+919109881861',
+            from: '+19092199176',
+            body: 'Your laptop\'s vitals are critical. Please check your dashboard for assistance'
+        });
+
+        response.json({ "message": "Working" })
+    });
+
+app.route('/pushNotification')
+    .get((req, response) => {
+
+        // Object
+        notifier.notify({
+            title: 'Your laptop needs attention',
+            message: 'Please visit our support website!'
+        });
+
+        response.json({ "message": "Working" })
+    });
+
 
 app.route('/newsystem/:data')
     .get((req, response) => {
