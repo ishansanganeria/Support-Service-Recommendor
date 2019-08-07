@@ -64,7 +64,7 @@ def cpuStatus():
             arr.remove('')
         except ValueError:
             break
-    return int(float(arr[2]))
+    return int(float(arr[3]))
 
 #RETURNS THE PERCENTAGE OF HDD/SDD BEING USED
 def diskStatus():    

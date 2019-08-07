@@ -62,7 +62,7 @@ app.route('/notification/:data')
         let time = res[1]
 
         let serialNumber = data.serialNumber;
-        let batteryCapacity = data.batteryCapacity;
+        let batteryCapacity = data.batteryLife;
         let temperature = data.temperature;
         let ram = data.ram;
         let cpu = data.cpu;
