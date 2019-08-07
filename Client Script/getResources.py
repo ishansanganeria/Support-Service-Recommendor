@@ -6,7 +6,7 @@ import subprocess, json
 import requests, urllib
 
 #RETURNS CAPACITY OF THE BATTERY IN PERCENTAGE
-def batteryCapacity():
+def batteryLife():
     p = subprocess.Popen(["acpi", "-V"], stdout=subprocess.PIPE)
     result = p.communicate()[0]
     arr = (result.split('\n'))[1].split(' ')
@@ -79,7 +79,6 @@ def diskStatus():
         line =  arr[x].split(' ')
         line = list(line)
         while True:
-            line_len = len(line)
             try:
                 line.remove('')
             except ValueError:
@@ -89,10 +88,9 @@ def diskStatus():
     
     return int(((float(used))/available)*100)
 
-
 data = {
     "serialNumber": 12345,
-    "batteryCapacity": batteryCapacity(),
+    "batteryLife": batteryLife(),
     "temperature": temperature(),
     "ram": ramStatus(),
     "cpu": cpuStatus(),

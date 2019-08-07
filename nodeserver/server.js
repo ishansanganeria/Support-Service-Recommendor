@@ -26,6 +26,29 @@ con.connect(function (err) {
 
 });
 
+app.route('/newsystem/:data')
+    .get((req, response) => {
+        let data = JSON.parse(req.params['data'])
+
+        let serialNumber = data.serialNumber;
+        let batteryCapacity = data.batteryCapacity;
+        let totalRAM = data.totalRAM;
+        let totalCPU = data.totalCPU;
+        let totalDisk = data.totalDisk;
+
+        let sql = "INSERT INTO sys_info VALUES ( " + serialNumber + "," + batteryCapacity + "," + totalRAM + ",\"" + totalCPU + "\"," + totalDisk +");"
+
+        console.log("\n\n\n" + sql + "\n\n\n" )
+
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("Inserted into table " + JSON.stringify(result));
+            console.log("\n")
+        });
+
+        response.json(data)
+    });
+
 
 app.route('/notification/:data')
     .get((req, response) => {
