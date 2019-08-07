@@ -1,0 +1,22 @@
+<h2>Customization</h2>
+<div fxLayoutGap="10px">
+<mat-form-field>
+    <mat-label>CPU</mat-label>
+    <mat-select>
+      <mat-option value="i5">i5</mat-option>
+      <mat-option value="i7">i7</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<mat-form-field>
+    <mat-label>GPU</mat-label>
+    <mat-select>
+      <mat-option value="2080ti">2080 Ti</mat-option>
+      <mat-option value="1080ti">1080 Ti</mat-option>
+    </mat-select>
+</mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onClick()">Okay</button>
+</div>

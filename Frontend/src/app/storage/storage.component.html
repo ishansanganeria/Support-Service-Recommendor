@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>Current status: {{diskAvg}}</h2>
+<mat-dialog-content>
+<h3><u>Suggestions:</u>
+  <ol>
+    <li>Clear up your drive</li>
+    <li>Shift data to cloud <a href="https://www.dellemc.com/en-us/glossary/cloud-storage.htm" target="_blank">https://www.dellemc.com/en-us/glossary/cloud-storage.htm</a></li>
+    <li>Buy a new hard disk</li></ol>
+    <div>
+      <div style = "display:block; padding:2.5%" >
+        <a href="https://www.dell.com/en-in/work/shop/dell-256-gb-m2-solid-state-drive-serial-ata-hard-drive/apd/414-bbbm/storage-drives-media"
+        target="_blank"><div style="margin: 0 auto;"><img src="../../assets/Dell256.jpg" style = "width:20%; margin-left:35%"> </div><figcaption style="text-align:center">Dell 256 GB M.2 Solid State Drive Serial ATA Hard Drive</figcaption>
+        </a></div>
+      <div style="display:block; padding: 2.5%">
+          <a href="https://www.dell.com/en-in/shop/dell-portable-thunderbolt-3-ssd-500gb/apd/452-bddn/storage-drives-media" target="_blank">
+            <img src="../../assets/Dell2.jpg" style = "width: 20%; margin-left: 35%;"><figcaption style = "text-align: center">Dell Portable Thunderbolt™ 3 SSD 500GB</figcaption>
+          </a>
+        </div>
+      </div>
+</h3>
+<div style="display:inline-block">
+<h3>Generate ticket <button mat-raised-button color="primary">Generate ticket</button></h3>
+</div>
+</mat-dialog-content>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button cdkFocusInitial (click)="onClick()">Okay</button>
+</div>
+
+<!-- <html>
+<head>
+  <script>
+      function enableButton2() {
+          document.getElementById("button2").disabled = false;
+      }
+  </script>
+</head>
+<body>
+  <input type="button" id="button1" value="button 1" onclick="enableButton2()"  />
+  <input type="button" id="button2" value="button 2" disabled />
+</body>
+</html> -->

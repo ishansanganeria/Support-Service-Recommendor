@@ -1,0 +1,171 @@
+<!-- <app-main-nav></app-main-nav>
+
+<mat-sidenav #sidenav role="navigation">
+  <app-main-nav (sidenavClose)="sidenav.close()"></app-main-nav>
+</mat-sidenav> -->
+<!-- <mat-sidenav-container>
+  <mat-sidenav mode="side" opened >Sidenav content</mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary"><i><b>DELL</b></i></mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container> -->
+
+<mat-toolbar color="primary">
+  <img src="../../assets/dell.png" style="height: 100%">
+  <span style="flex: 1 1 auto"></span>
+  <span style="align-content: flex-end">
+    <button mat-button>New Products</button>
+    <button mat-button>Warranty</button>
+    <button mat-button>Your Tickets</button>
+  </span>
+  <button mat-raised-button color="primary" (click)="sendNotification()">Send Dummy Notification</button>
+</mat-toolbar>
+
+<div *ngIf="typeofCustomer">
+  <mat-button-toggle-group #group="matButtonToggleGroup">
+    <mat-button-toggle value="New Customer">New Customer</mat-button-toggle>
+    <mat-button-toggle value="Existing Customer">Existing Customer</mat-button-toggle>
+  </mat-button-toggle-group>
+  <button mat-button (click)="decideCustomer(group.value)">Submit</button>
+</div>
+
+<div *ngIf="newCustomer">
+  <app-newusers></app-newusers>
+</div>
+
+<mat-grid-list *ngIf="dataCollected && oldCustomer" cols="3">
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header fxLayoutAlign="center center">
+        <mat-card-title>STORAGE</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div style="display: block;">
+          <canvas baseChart [data]="DiskpieChartData" [labels]="DiskpieChartLabels" [chartType]="DiskpieChartType"
+            [options]="pieChartOptions" [plugins]="DiskpieChartPlugins" [legend]="DiskpieChartLegend">
+          </canvas>
+        </div>
+      </mat-card-content>
+      <mat-card-actions fxLayoutAlign="center center">
+        <button *ngIf="data.diskAvg > 70" mat-raised-button color="primary" (click)="openStorage()">CHECK</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header fxLayoutAlign="center center">
+        <mat-card-title>BATTERY</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div style="display: block;">
+          <canvas baseChart [datasets]="BattbarChartData" [labels]="BattbarChartLabels" [options]="barChartOptions"
+            [plugins]="BattbarChartPlugins" [legend]="BattbarChartLegend" [chartType]="BattbarChartType">
+          </canvas>
+        </div>
+      </mat-card-content>
+      <mat-card-actions fxLayoutAlign="center center">
+        <button *ngIf="data.batteryAvg < 70" mat-raised-button color="primary" (click)="openBattery()">CHECK</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header fxLayoutAlign="center center">
+        <mat-card-title>RAM</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div style="display: block;">
+          <canvas baseChart [data]="RAMpieChartData" [labels]="RAMpieChartLabels" [chartType]="RAMpieChartType"
+            [options]="pieChartOptions" [plugins]="RAMpieChartPlugins" [legend]="RAMpieChartLegend">
+          </canvas>
+        </div>
+      </mat-card-content>
+      <mat-card-actions fxLayoutAlign="center center">
+        <button *ngIf="data.ramAvg > 70" mat-raised-button color="primary" (click)="openRAM()">CHECK</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header fxLayoutAlign="center center">
+        <mat-card-title>TEMPERATURE</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div style="display: block;">
+          <canvas baseChart [datasets]="TempBarChartData" [labels]="TempBarChartLabels" [options]="barChartOptions"
+            [plugins]="TempBarChartPlugins" [legend]="TempBarChartLegend" [chartType]="TempBarChartType">
+          </canvas>
+        </div>
+      </mat-card-content>
+      <mat-card-actions fxLayoutAlign="center center">
+        <button *ngIf="data.tempAvg > 70" mat-raised-button color="primary" (click)="openTemperature()">CHECK</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header fxLayoutAlign="center center">
+        <mat-card-title>CPU</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div style="display: block;">
+          <canvas baseChart [data]="CpupieChartData" [labels]="CpupieChartLabels" [chartType]="CpupieChartType"
+            [options]="pieChartOptions" [plugins]="CpupieChartPlugins" [legend]="CpupieChartLegend">
+          </canvas>
+        </div>
+      </mat-card-content>
+      <mat-card-actions fxLayoutAlign="center center">
+        <button *ngIf="data.cpuAvg > 70" mat-raised-button color="primary" (click)="openCPU()">CHECK</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header fxLayoutAlign="center center">
+        <mat-card-title>MOUSE</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-icon>
+          mouse
+        </mat-icon>
+      </mat-card-content>
+      <mat-card-actions fxLayoutAlign="center center">
+        <button mat-raised-button color="primary">CHECK</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header fxLayoutAlign="center center">
+        <mat-card-title>DISPLAY</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-icon>
+          tv
+        </mat-icon>
+      </mat-card-content>
+      <mat-card-actions fxLayoutAlign="center center">
+        <button mat-raised-button color="primary">CHECK</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header fxLayoutAlign="center center">
+        <mat-card-title>CONNECTIVITY</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-icon>
+          wifi
+        </mat-icon>
+      </mat-card-content>
+      <mat-card-actions fxLayoutAlign="center center">
+        <button mat-raised-button color="primary">CHECK</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

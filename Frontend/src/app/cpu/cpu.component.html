@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Current status: {{cpuAvg}}</h2>
+<mat-dialog-content>
+<h3><u>Suggestions(if CPU>65%):</u>
+  <ol>
+    <li>Laptop Suggestion</li>
+    <li>Get a service</li>
+  </ol>
+</h3>
+<h3>Generate ticket <button mat-raised-button color="primary">Generate ticket</button></h3>
+</mat-dialog-content>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button cdkFocusInitial (click)="onClick()">Okay</button>
+</div>
