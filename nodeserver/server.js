@@ -88,10 +88,9 @@ app.route('/newCustomer/:data')
         let contact = data.contact;
         let cpu = data.cpu;
         let gpu = data.gpu;
-        let battery = data.battery; 
-        
-        let sql = "INSERT INTO cust_info  VALUES ( \"" + name + "\",\"" + email + "," + contact + ",\"" + cpu + "\",\"" + gpu + "\",\"" + battery +  "\");"
+        let battery = data.battery;
 
+        let sql = "INSERT INTO cust_info  VALUES ( \"" + name + "\"," + contact + ",\"" + email + "\",\"" + cpu + "\",\"" + gpu + "\",\"" + battery + "\");"
         con.query(sql, function (err, result) {
             if (err) throw err;
             console.log("Inserted into table cust_info" + JSON.stringify(result));
