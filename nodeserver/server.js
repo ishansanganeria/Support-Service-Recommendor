@@ -35,7 +35,7 @@ app.route('/notification/:data')
         let dt = date_time.format(now, 'YYYY/MM/DD HH:mm:ss');
         let res = dt.split(" ")
         let date = res[0].replace('/', '-')
-        date = date.replace('/', '-')
+            date = date.replace('/', '-')
         let time = res[1]
 
         let serialNumber = data.serialNumber;
@@ -52,7 +52,6 @@ app.route('/notification/:data')
             console.log("Inserted into table " + JSON.stringify(result));
             console.log("\n")
         });
-
 
         response.json(data)
     });
