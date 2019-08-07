@@ -36,9 +36,9 @@ app.route('/newsystem/:data')
         let totalCPU = data.totalCPU;
         let totalDisk = data.totalDisk;
 
-        let sql = "INSERT INTO sys_info VALUES ( " + serialNumber + "," + batteryCapacity + "," + totalRAM + ",\"" + totalCPU + "\"," + totalDisk +");"
+        let sql = "INSERT INTO sys_info VALUES ( " + serialNumber + "," + batteryCapacity + "," + totalRAM + ",\"" + totalCPU + "\"," + totalDisk + ");"
 
-        console.log("\n\n\n" + sql + "\n\n\n" )
+        console.log("\n\n\n" + sql + "\n\n\n")
 
         con.query(sql, function (err, result) {
             if (err) throw err;
@@ -58,7 +58,7 @@ app.route('/notification/:data')
         let dt = date_time.format(now, 'YYYY/MM/DD HH:mm:ss');
         let res = dt.split(" ")
         let date = res[0].replace('/', '-')
-            date = date.replace('/', '-')
+        date = date.replace('/', '-')
         let time = res[1]
 
         let serialNumber = data.serialNumber;
@@ -78,6 +78,30 @@ app.route('/notification/:data')
 
         response.json(data)
     });
+
+app.route('/newCustomer/:data')
+    .get((req, response) => {
+        let data = JSON.parse(req.params['data'])
+
+        let name = data.name;
+        let email = data.email;
+        let contact = data.contact;
+        let cpu = data.cpu;
+        let gpu = data.gpu;
+        let battery = data.battery; 
+        
+        let sql = "INSERT INTO cust_info  VALUES ( \"" + name + "\",\"" + email + "," + contact + ",\"" + cpu + "\",\"" + gpu + "\",\"" + battery +  "\");"
+
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("Inserted into table cust_info" + JSON.stringify(result));
+            console.log("\n")
+        });
+
+        response.json(data)
+    });
+
+
 
 // SELECT AVG(Battery_Life) from stats
 // WHERE DATE > (CURRENT_DATE) - 10 AND Serial_Number = (SERIAL_NUMBER)
@@ -177,10 +201,10 @@ app.route('/getStatus/:data')
                                 diskAvg = parseInt(disk, 10);
                                 cpuAverage(serialNumber)
                                     .then((cpu) => {
-                                        cpuAvg = parseInt(cpu,10);
+                                        cpuAvg = parseInt(cpu, 10);
                                         batteryAverage(serialNumber)
                                             .then((battery) => {
-                                                batteryAvg = parseInt(battery,10);
+                                                batteryAvg = parseInt(battery, 10);
                                                 response.json({ ramAvg, cpuAvg, diskAvg, tempAvg, batteryAvg })
                                             })
                                     })
