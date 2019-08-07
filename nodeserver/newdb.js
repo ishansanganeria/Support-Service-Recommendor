@@ -46,7 +46,15 @@ con.connect(function (err) {
 
     con.query(query, function (err, result) {
         if (err) throw err;
-        console.log("Created table stats: " + JSON.stringify(result));
+        console.log("Created table sys_info: " + JSON.stringify(result));
+        console.log("\n")
+    });
+
+    query = "CREATE TABLE cust_info (Name VARCHAR(30), Contact int NOT NULL, Email VARCHAR(30), CPU VARCHAR(10), GPU VARCHAR(10),Battery VARCHAR(10), PRIMARY KEY(Contact)); "
+
+    con.query(query, function (err, result) {
+        if (err) throw err;
+        console.log("Created cust_info stats: " + JSON.stringify(result));
         console.log("\n")
     });
 
